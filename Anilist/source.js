@@ -1251,12 +1251,12 @@ var _Sources = (() => {
                 }),
                 App.createDUILabel({
                   id: "start",
-                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
+                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt),
                   label: "Start Date"
                 }),
                 App.createDUILabel({
                   id: "finish",
-                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
+                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt),
                   label: "Finish Date"
                 })
               ]
@@ -1541,16 +1541,11 @@ var _Sources = (() => {
       }
     }
     formatFuzzyDate(date) {
-      console.log(JSON.stringify(date));
-      if (date == null) {
-        return null;
-      }
       const formattedMonth = date.month != null && date.month < 10 ? `0${date.month}` : date.month ?? "??";
       const formattedDay = date.day != null && date.day < 10 ? `0${date.day}` : date.day ?? "??";
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
     reverseFormatFuzzyDate(dateString) {
-      console.log(dateString);
       if (dateString == null) {
         return null;
       }
