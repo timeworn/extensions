@@ -426,7 +426,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
                     mutation = saveMangaProgressMutation(mutationData)
                 }
 
-                // console.log(JSON.stringify(mutation, null, 2)) // Log request data
+                console.log(JSON.stringify(mutation, null, 2)) // Log request data
 
                 await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
