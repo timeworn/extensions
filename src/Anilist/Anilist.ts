@@ -322,12 +322,12 @@ export class Anilist implements Searchable, MangaProgressProviding {
                             }),
                             App.createDUILabel({
                                 id: 'start',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt),
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
                                 label: 'Start Date'
                             }),
                             App.createDUILabel({
                                 id: 'finish',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt),
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
                                 label: 'Finish Date'
                             }),
                         ]
@@ -427,7 +427,6 @@ export class Anilist implements Searchable, MangaProgressProviding {
                 }
 
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
-                console.log(JSON.stringify(mutationData))
 
                 await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
@@ -627,14 +626,18 @@ export class Anilist implements Searchable, MangaProgressProviding {
         }
     }
 
-    formatFuzzyDate(date: AnilistManga.FuzzyDate): string | null {
+    formatFuzzyDate(date: AnilistManga.FuzzyDate | undefined): string | null {
+        if (date == undefined) {
+            return null
+        } 
+
         const formattedMonth = date.month != null && date.month < 10 ? `0${date.month}` : date.month ?? '??'
         const formattedDay = date.day != null && date.day < 10 ? `0${date.day}` : date.day ?? '??'
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
-    reverseFormatFuzzyDate(dateString: string | undefined): AnilistManga.FuzzyDate | null {
-        if (dateString == null) {
+    reverseFormatFuzzyDate(dateString: string | "??"): AnilistManga.FuzzyDate | null {
+        if (dateString == "??") {
             return null
         }
 
