@@ -1352,6 +1352,7 @@ var _Sources = (() => {
             mutation = saveMangaProgressMutation(mutationData);
           }
           console.log(JSON.stringify(mutation, null, 2));
+          console.log(JSON.stringify(mutationData));
           await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
@@ -1540,6 +1541,7 @@ var _Sources = (() => {
       }
     }
     formatFuzzyDate(date) {
+      console.log(JSON.stringify(date));
       if (date == null) {
         return null;
       }
@@ -1548,6 +1550,7 @@ var _Sources = (() => {
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
     reverseFormatFuzzyDate(dateString) {
+      console.log(dateString);
       if (dateString == null) {
         return null;
       }
