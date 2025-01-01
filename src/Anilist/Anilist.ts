@@ -636,8 +636,8 @@ export class Anilist implements Searchable, MangaProgressProviding {
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
-    reverseFormatFuzzyDate(dateString: string | "??"): AnilistManga.FuzzyDate | null {
-        if (dateString == "??") {
+    reverseFormatFuzzyDate(dateString: string | undefined): AnilistManga.FuzzyDate | null {
+        if (dateString == undefined || dateString == "??") {
             return null
         }
 
