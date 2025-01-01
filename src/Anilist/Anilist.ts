@@ -427,6 +427,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
                 }
 
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
+                console.log(JSON.stringify(mutationData))
 
                 await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
@@ -627,6 +628,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
     }
 
     formatFuzzyDate(date: AnilistManga.FuzzyDate | undefined): string | null {
+        console.log(JSON.stringify(date))
         if (date == null) {
             return null
         }
@@ -637,6 +639,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
     }
 
     reverseFormatFuzzyDate(dateString: string | undefined): AnilistManga.FuzzyDate | null {
+        console.log(dateString)
         if (dateString == null) {
             return null
         }
