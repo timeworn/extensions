@@ -1,0 +1,40 @@
+on: push
+name: Bundle and Publish Sources
+jobs:
+  build:
+    name: Bundle and Publish Sources
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14.x
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Set SHA as current version
+        run: |
+          find . -iname "*.ts" | xargs sed -i "s/version:.\+/version: '${GITHUB_SHA:0:7}',/"
+
+      - name: Checkout existing bundles
+        uses: actions/checkout@v3
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: bundles
+
+      - run: npm install
+      - run: npm run bundle -- --folder=${{ steps.extract_branch.outputs.branch }}
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: bundles
