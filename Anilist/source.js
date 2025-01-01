@@ -1251,12 +1251,12 @@ var _Sources = (() => {
                 }),
                 App.createDUILabel({
                   id: "start",
-                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt),
+                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
                   label: "Start Date"
                 }),
                 App.createDUILabel({
                   id: "finish",
-                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt),
+                  value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
                   label: "Finish Date"
                 })
               ]
@@ -1352,7 +1352,6 @@ var _Sources = (() => {
             mutation = saveMangaProgressMutation(mutationData);
           }
           console.log(JSON.stringify(mutation, null, 2));
-          console.log(JSON.stringify(mutationData));
           await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
@@ -1541,12 +1540,15 @@ var _Sources = (() => {
       }
     }
     formatFuzzyDate(date) {
+      if (date == void 0) {
+        return null;
+      }
       const formattedMonth = date.month != null && date.month < 10 ? `0${date.month}` : date.month ?? "??";
       const formattedDay = date.day != null && date.day < 10 ? `0${date.day}` : date.day ?? "??";
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
     reverseFormatFuzzyDate(dateString) {
-      if (dateString == null) {
+      if (dateString == "??") {
         return null;
       }
       const [year, month, day] = dateString.split("-").map((part) => part === "??" ? void 0 : parseInt(part));
