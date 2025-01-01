@@ -322,12 +322,12 @@ export class Anilist implements Searchable, MangaProgressProviding {
                             }),
                             App.createDUILabel({
                                 id: 'start',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt),
                                 label: 'Start Date'
                             }),
                             App.createDUILabel({
                                 id: 'finish',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt),
                                 label: 'Finish Date'
                             }),
                         ]
@@ -627,19 +627,13 @@ export class Anilist implements Searchable, MangaProgressProviding {
         }
     }
 
-    formatFuzzyDate(date: AnilistManga.FuzzyDate | undefined): string | null {
-        console.log(JSON.stringify(date))
-        if (date == null) {
-            return null
-        }
-
+    formatFuzzyDate(date: AnilistManga.FuzzyDate): string | null {
         const formattedMonth = date.month != null && date.month < 10 ? `0${date.month}` : date.month ?? '??'
         const formattedDay = date.day != null && date.day < 10 ? `0${date.day}` : date.day ?? '??'
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
     reverseFormatFuzzyDate(dateString: string | undefined): AnilistManga.FuzzyDate | null {
-        console.log(dateString)
         if (dateString == null) {
             return null
         }
