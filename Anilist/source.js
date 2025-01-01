@@ -1548,7 +1548,7 @@ var _Sources = (() => {
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
     reverseFormatFuzzyDate(dateString) {
-      if (dateString == "??") {
+      if (dateString == void 0 || dateString == "??") {
         return null;
       }
       const [year, month, day] = dateString.split("-").map((part) => part === "??" ? void 0 : parseInt(part));
