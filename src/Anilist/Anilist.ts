@@ -410,8 +410,13 @@ export class Anilist implements Searchable, MangaProgressProviding {
                 if (status == 'NONE' && id != null) {
                     mutation = deleteMangaProgressMutation(id)
                 } else {
+                    const now = new Date()
                     mutationData = {
-                        ...mutationData,
+                        completedAt: {
+                            year: now.getFullYear(),
+                            month: now.getMonth() + 1,
+                            day: now.getDate()
+                        },
                         id: id,
                         mediaId: mediaId,
                         status: status,
@@ -427,6 +432,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
                 }
 
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
+                console.log(JSON.stringify(mutationData))
 
                 await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
