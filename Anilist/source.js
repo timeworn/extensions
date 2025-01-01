@@ -1351,6 +1351,7 @@ var _Sources = (() => {
             };
             mutation = saveMangaProgressMutation(mutationData);
           }
+          console.log(JSON.stringify(mutation, null, 2));
           await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
