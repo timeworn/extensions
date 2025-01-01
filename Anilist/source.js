@@ -1336,8 +1336,13 @@ var _Sources = (() => {
           if (status == "NONE" && id != null) {
             mutation = deleteMangaProgressMutation(id);
           } else {
+            const now = /* @__PURE__ */ new Date();
             mutationData = {
-              ...mutationData,
+              completedAt: {
+                year: now.getFullYear(),
+                month: now.getMonth() + 1,
+                day: now.getDate()
+              },
               id,
               mediaId,
               status,
@@ -1352,6 +1357,7 @@ var _Sources = (() => {
             mutation = saveMangaProgressMutation(mutationData);
           }
           console.log(JSON.stringify(mutation, null, 2));
+          console.log(JSON.stringify(mutationData));
           await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
