@@ -1365,11 +1365,17 @@ var _Sources = (() => {
             mutation = saveMangaProgressMutation(mutationData);
           }
           console.log(JSON.stringify(mutation, null, 2));
-          await this.requestManager.schedule(App.createRequest({
+          const response = await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
             data: mutation
           }), 1);
+          setTimeout(() => {
+            throw new Error(JSON.stringify(response.data));
+          }, 0);
+          setTimeout(() => {
+            throw new Error(JSON.stringify(mutationData));
+          }, 0);
         }
       });
     }
