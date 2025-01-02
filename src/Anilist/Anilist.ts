@@ -396,7 +396,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 let mutationData: SaveMangaProgressVariables = {}
 
                 if (status == 'COMPLETED') {
-                    if (completedAt.year == null && completedAt.month == null && completedAt.day == null) {
+                    if ( completedAt == null || (completedAt.year == null && completedAt.month == null && completedAt.day == null)) {
                         const now = new Date()
                         mutationData = {
                             completedAt: {
@@ -557,7 +557,8 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                         progressVolumes: 1
                     }
                     
-                    if (anilistManga?.mediaListEntry?.startedAt == null) {
+                    const startedAt = anilistManga?.mediaListEntry?.startedAt
+                    if (startedAt == null || (startedAt?.day == null && startedAt?.month == null && startedAt?.year == null)) {
                         const now = new Date()
                         params = {
                             ...params,
