@@ -1,4 +1,8 @@
-import { FuzzyDate } from './anilist-manga'
+export interface FuzzyDateInput {
+    year?: string
+    month?: string
+    day?: string
+}
 
 export interface GraphQLQuery {
     query: string
@@ -152,8 +156,8 @@ export interface SaveMangaProgressVariables {
     progressVolumes?: number;
     repeat?: number,
     notes?: string;
-    startedAt?: FuzzyDate,
-    completedAt?: FuzzyDate,
+    startedAt?: FuzzyDateInput,
+    completedAt?: FuzzyDateInput,
 }
 
 

@@ -400,9 +400,9 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                         const now = new Date()
                         mutationData = {
                             completedAt: {
-                                year: now.getFullYear(),
-                                month: now.getMonth() + 1,
-                                day: now.getDate()
+                                year: `${now.getFullYear()}`,
+                                month: `${now.getMonth() + 1}`,
+                                day: `${now.getDate()}`
                             }
                         }
                     }
