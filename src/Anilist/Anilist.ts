@@ -44,7 +44,7 @@ const ANILIST_GRAPHQL_ENDPOINT = 'https://graphql.anilist.co/'
 
 export const AnilistInfo: SourceInfo = {
     name: 'Anilist',
-    author: 'Faizan Durrani ♥ Netsky',
+    author: 'Timeworn',
     contentRating: ContentRating.EVERYONE,
     icon: 'icon.png',
     version: '1.1.9',
@@ -391,8 +391,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 const status = values['status']?.[0] ?? ''
                 const id = tempData.id ? Number(tempData.id) : undefined //values['id'] != null ? Number(values['id']) : undefined
                 const mediaId = Number(tempData.mediaId) //Number(values['mediaId'])
-                const startedAt: AnilistManga.FuzzyDate = tempData.startedAt ?? { year: null, month: null, day: null }
-                const completedAt: AnilistManga.FuzzyDate = tempData.completedAt ?? { year: null, month: null, day: null }
+                const completedAt: AnilistManga.FuzzyDate = tempData.completedAt
 
                 let mutationData: SaveMangaProgressVariables = {}
 
@@ -424,20 +423,17 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                         private: values['private'],
                         hiddenFromStatusLists: values['hiddenFromStatusLists'],
                         score: Number(values['score']),
-                        startedAt: { year: startedAt.year, month: startedAt.month, day: startedAt.day },
                     }
+
                     mutation = saveMangaProgressMutation(mutationData)
                 }
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
 
-                const response = await this.requestManager.schedule(App.createRequest({
+                await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
                     method: 'POST',
                     data: mutation
                 }), 1)
-
-                throw new Error(JSON.stringify(response.data))
-                // setTimeout(() => { throw new Error(JSON.stringify(mutationData)) }, 0)
             }
         })
     }
