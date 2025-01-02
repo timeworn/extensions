@@ -831,6 +831,8 @@ var _Sources = (() => {
                 hiddenFromStatusLists
                 score
                 notes
+                startedAt
+                completedAt
             }
             title {
                 romaji
@@ -853,8 +855,8 @@ var _Sources = (() => {
     }
   });
   var saveMangaProgressMutation = (variables) => ({
-    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $completedAt: FuzzyDate) {
-        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, completedAt: $completedAt) {
+    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $startedAt: FuzzyDate, $completedAt: FuzzyDate) {
+        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, startedAt: $startedAt, completedAt: $completedAt) {
             id
         }
     }`,
@@ -995,7 +997,7 @@ var _Sources = (() => {
     author: "Faizan Durrani \u2665 Netsky",
     contentRating: import_types.ContentRating.EVERYONE,
     icon: "icon.png",
-    version: "1.1.8",
+    version: "1.1.9",
     description: "Modified Anilist Tracker",
     websiteBaseURL: "https://anilist.co",
     intents: import_types.SourceIntents.MANGA_TRACKING | import_types.SourceIntents.SETTINGS_UI
@@ -1336,13 +1338,8 @@ var _Sources = (() => {
           if (status == "NONE" && id != null) {
             mutation = deleteMangaProgressMutation(id);
           } else {
-            const now = /* @__PURE__ */ new Date();
             mutationData = {
-              completedAt: {
-                year: now.getFullYear(),
-                month: now.getMonth() + 1,
-                day: now.getDate()
-              },
+              ...mutationData,
               id,
               mediaId,
               status,
@@ -1352,7 +1349,8 @@ var _Sources = (() => {
               repeat: values["repeat"],
               private: values["private"],
               hiddenFromStatusLists: values["hiddenFromStatusLists"],
-              score: Number(values["score"])
+              score: Number(values["score"]),
+              startedAt: this.reverseFormatFuzzyDate(values["start"]) ?? { year: null, month: null, day: null }
             };
             mutation = saveMangaProgressMutation(mutationData);
           }
@@ -1546,7 +1544,7 @@ var _Sources = (() => {
       }
     }
     formatFuzzyDate(date) {
-      if (date == void 0) {
+      if (date == void 0 || date.day == null && date.month == null && date.year == null) {
         return null;
       }
       const formattedMonth = date.month != null && date.month < 10 ? `0${date.month}` : date.month ?? "??";
@@ -1554,14 +1552,14 @@ var _Sources = (() => {
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
     reverseFormatFuzzyDate(dateString) {
-      if (dateString == void 0 || dateString == "??") {
+      if (dateString == "??") {
         return null;
       }
-      const [year, month, day] = dateString.split("-").map((part) => part === "??" ? void 0 : parseInt(part));
+      const [year, month, day] = dateString.split("-").map((part) => part === "??" ? null : parseInt(part));
       return {
-        year,
-        month,
-        day
+        year: year ?? null,
+        month: month ?? null,
+        day: day ?? null
       };
     }
     // formatAppleUnixTime(time: number): string {
