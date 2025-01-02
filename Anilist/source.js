@@ -1006,7 +1006,7 @@ var _Sources = (() => {
     author: "Timeworn",
     contentRating: import_types.ContentRating.EVERYONE,
     icon: "icon.png",
-    version: "1.1.9",
+    version: "1.2.0",
     description: "AniList Tracker",
     websiteBaseURL: "https://anilist.co",
     intents: import_types.SourceIntents.MANGA_TRACKING | import_types.SourceIntents.SETTINGS_UI
