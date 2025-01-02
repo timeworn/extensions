@@ -1331,17 +1331,19 @@ var _Sources = (() => {
           const status = values["status"]?.[0] ?? "";
           const id = tempData.id ? Number(tempData.id) : void 0;
           const mediaId = Number(tempData.mediaId);
+          const startedAt = tempData.startedAt;
           const completedAt = tempData.completedAt;
           let mutationData = {};
           if (status == "COMPLETED") {
             if (completedAt == null || completedAt.year == null && completedAt.month == null && completedAt.day == null) {
-              const now = /* @__PURE__ */ new Date();
               mutationData = {
-                completedAt: {
-                  year: `${now.getFullYear()}`,
-                  month: `${now.getMonth() + 1}`,
-                  day: `${now.getDate()}`
-                }
+                completedAt: this.getFuzzyDateInput()
+              };
+            }
+          } else if (status == "CURRENT") {
+            if (startedAt == null || startedAt.year == null && startedAt.month == null && startedAt.day == null) {
+              mutationData = {
+                startedAt: this.getFuzzyDateInput()
               };
             }
           }
@@ -1477,14 +1479,9 @@ var _Sources = (() => {
             };
             const startedAt = anilistManga?.mediaListEntry?.startedAt;
             if (startedAt == null || startedAt?.day == null && startedAt?.month == null && startedAt?.year == null) {
-              const now = /* @__PURE__ */ new Date();
               params = {
                 ...params,
-                startedAt: {
-                  year: now.getFullYear(),
-                  month: now.getMonth() + 1,
-                  day: now.getDate()
-                }
+                startedAt: this.getFuzzyDateInput()
               };
             }
           } else {
@@ -1569,6 +1566,14 @@ var _Sources = (() => {
         year: year ?? null,
         month: month ?? null,
         day: day ?? null
+      };
+    }
+    getFuzzyDateInput() {
+      const now = /* @__PURE__ */ new Date();
+      return {
+        year: `${now.getFullYear()}`,
+        month: `${now.getMonth() + 1}`,
+        day: `${now.getDate()}`
       };
     }
     // formatAppleUnixTime(time: number): string {
