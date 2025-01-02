@@ -1380,7 +1380,7 @@ var _Sources = (() => {
             method: "POST",
             data: mutation
           }), 1);
-          throw new Error(JSON.stringify(response.data));
+          throw new Error(JSON.stringify(mutation));
         }
       });
     }
