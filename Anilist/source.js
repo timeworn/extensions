@@ -1334,7 +1334,7 @@ var _Sources = (() => {
           const completedAt = tempData.completedAt;
           let mutationData = {};
           if (status == "COMPLETED") {
-            if (completedAt.year == null && completedAt.month == null && completedAt.day == null) {
+            if (completedAt == null || completedAt.year == null && completedAt.month == null && completedAt.day == null) {
               const now = /* @__PURE__ */ new Date();
               mutationData = {
                 completedAt: {
@@ -1475,7 +1475,8 @@ var _Sources = (() => {
               progress: 1,
               progressVolumes: 1
             };
-            if (anilistManga?.mediaListEntry?.startedAt == null) {
+            const startedAt = anilistManga?.mediaListEntry?.startedAt;
+            if (startedAt == null || startedAt?.day == null && startedAt?.month == null && startedAt?.year == null) {
               const now = /* @__PURE__ */ new Date();
               params = {
                 ...params,
