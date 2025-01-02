@@ -831,8 +831,16 @@ var _Sources = (() => {
                 hiddenFromStatusLists
                 score
                 notes
-                startedAt
-                completedAt
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
             }
             title {
                 romaji
