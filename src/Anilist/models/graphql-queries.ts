@@ -160,6 +160,16 @@ export const saveMangaProgressMutation = (variables: SaveMangaProgressVariables)
     query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $startedAt: FuzzyDate, $completedAt: FuzzyDate) {
         SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, startedAt: $startedAt, completedAt: $completedAt) {
             id
+            mediaId
+            score
+            private
+            hiddenFromStatusLists
+            progress
+            progressVolumes
+            repeat
+            notes
+            startedAt
+            completedAt
         }
     }`,
     variables: variables
