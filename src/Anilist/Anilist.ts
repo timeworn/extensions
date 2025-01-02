@@ -436,7 +436,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     data: mutation
                 }), 1)
 
-                throw new Error(JSON.stringify(response.data))
+                throw new Error(JSON.stringify(mutation))
                 // setTimeout(() => { throw new Error(JSON.stringify(mutationData)) }, 0)
             }
         })
