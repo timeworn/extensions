@@ -48,7 +48,7 @@ export const AnilistInfo: SourceInfo = {
     author: 'Timeworn',
     contentRating: ContentRating.EVERYONE,
     icon: 'icon.png',
-    version: '1.1.9',
+    version: '1.2.0',
     description: 'AniList Tracker',
     websiteBaseURL: 'https://anilist.co',
     intents: SourceIntents.MANGA_TRACKING | SourceIntents.SETTINGS_UI
