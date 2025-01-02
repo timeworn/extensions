@@ -202,7 +202,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     throw new Error(`Unable to find Manga on Anilist with id ${mangaId}`)
                 }
 
-                Object.assign(tempData, { id: anilistManga.mediaListEntry?.id, mediaId: anilistManga.id }) // Temp solution
+                Object.assign(tempData, { id: anilistManga.mediaListEntry?.id, mediaId: anilistManga.id, startedAt: anilistManga.mediaListEntry?.startedAt, completedAt: anilistManga.mediaListEntry?.completedAt }) // Temp solution
 
                 return [
                     App.createDUISection({
@@ -391,14 +391,13 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 const status = values['status']?.[0] ?? ''
                 const id = tempData.id ? Number(tempData.id) : undefined //values['id'] != null ? Number(values['id']) : undefined
                 const mediaId = Number(tempData.mediaId) //Number(values['mediaId'])
-                
+                const startedAt: AnilistManga.FuzzyDate = tempData.startedAt ?? { year: null, month: null, day: null }
+                const completedAt: AnilistManga.FuzzyDate = tempData.completedAt ?? { year: null, month: null, day: null }
+
                 let mutationData: SaveMangaProgressVariables = {}
 
-                console.log(values)
-                console.log(JSON.stringify(values))
-                throw new Error(JSON.stringify(values));
                 if (status == 'COMPLETED') {
-                    if (this.reverseFormatFuzzyDate(values['completedAt']) == null) {
+                    if (completedAt.year == null && completedAt.month == null && completedAt.day == null) {
                         const now = new Date()
                         mutationData = {
                             completedAt: {
@@ -425,13 +424,12 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                         private: values['private'],
                         hiddenFromStatusLists: values['hiddenFromStatusLists'],
                         score: Number(values['score']),
-                        startedAt: this.reverseFormatFuzzyDate(values['startedAt']) ?? { year: null, month: null, day: null },
+                        startedAt: { year: startedAt.year, month: startedAt.month, day: startedAt.day },
                     }
                     mutation = saveMangaProgressMutation(mutationData)
                 }
 
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
-                console.log(JSON.stringify(mutationData))
 
                 await this.requestManager.schedule(App.createRequest({
                     url: ANILIST_GRAPHQL_ENDPOINT,
