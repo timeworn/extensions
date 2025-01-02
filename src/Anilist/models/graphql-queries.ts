@@ -109,6 +109,8 @@ export const getMangaProgressQuery = (id: number): GraphQLQuery => ({
                 hiddenFromStatusLists
                 score
                 notes
+                startedAt
+                completedAt
             }
             title {
                 romaji
@@ -142,12 +144,13 @@ export interface SaveMangaProgressVariables {
     progressVolumes?: number;
     repeat?: number,
     notes?: string;
+    startedAt?: FuzzyDate,
     completedAt?: FuzzyDate,
 }
 
 export const saveMangaProgressMutation = (variables: SaveMangaProgressVariables): GraphQLQuery => ({
-    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $completedAt: FuzzyDate) {
-        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, completedAt: $completedAt) {
+    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $startedAt: FuzzyDate, $completedAt: FuzzyDate) {
+        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, startedAt: $startedAt, completedAt: $completedAt) {
             id
         }
     }`,

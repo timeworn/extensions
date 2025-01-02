@@ -47,7 +47,7 @@ export const AnilistInfo: SourceInfo = {
     author: 'Faizan Durrani ♥ Netsky',
     contentRating: ContentRating.EVERYONE,
     icon: 'icon.png',
-    version: '1.1.8',
+    version: '1.1.9',
     description: 'Modified Anilist Tracker',
     websiteBaseURL: 'https://anilist.co',
     intents: SourceIntents.MANGA_TRACKING | SourceIntents.SETTINGS_UI
@@ -410,13 +410,8 @@ export class Anilist implements Searchable, MangaProgressProviding {
                 if (status == 'NONE' && id != null) {
                     mutation = deleteMangaProgressMutation(id)
                 } else {
-                    const now = new Date()
                     mutationData = {
-                        completedAt: {
-                            year: now.getFullYear(),
-                            month: now.getMonth() + 1,
-                            day: now.getDate()
-                        },
+                        ...mutationData,
                         id: id,
                         mediaId: mediaId,
                         status: status,
@@ -427,6 +422,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
                         private: values['private'],
                         hiddenFromStatusLists: values['hiddenFromStatusLists'],
                         score: Number(values['score']),
+                        startedAt: this.reverseFormatFuzzyDate(values['start']) ?? { year: null, month: null, day: null },
                     }
                     mutation = saveMangaProgressMutation(mutationData)
                 }
@@ -633,7 +629,7 @@ export class Anilist implements Searchable, MangaProgressProviding {
     }
 
     formatFuzzyDate(date: AnilistManga.FuzzyDate | undefined): string | null {
-        if (date == undefined) {
+        if (date == undefined || (date.day == null && date.month == null && date.year == null)) {
             return null
         } 
 
@@ -642,16 +638,16 @@ export class Anilist implements Searchable, MangaProgressProviding {
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
-    reverseFormatFuzzyDate(dateString: string | undefined): AnilistManga.FuzzyDate | null {
-        if (dateString == undefined || dateString == "??") {
+    reverseFormatFuzzyDate(dateString: string): AnilistManga.FuzzyDate | null {
+        if (dateString == "??") {
             return null
         }
 
-        const [year, month, day] = dateString.split('-').map(part => part === '??' ? undefined : parseInt(part))
+        const [year, month, day] = dateString.split('-').map(part => part === '??' ? null : parseInt(part))
         return {
-            year: year,
-            month: month,
-            day: day
+            year: year ?? null,
+            month: month ?? null,
+            day: day ?? null
         }
     }
 

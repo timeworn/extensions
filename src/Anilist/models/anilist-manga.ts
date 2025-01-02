@@ -65,9 +65,9 @@ export interface Staff {
 }
 
 export interface FuzzyDate {
-    year?: number;
-    month?: number;
-    day?: number;
+    year: number | null;
+    month: number | null;
+    day: number | null;
 }
 
 export interface StaffEdge {
