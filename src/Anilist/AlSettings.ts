@@ -36,15 +36,15 @@ export const trackerSettings = (stateManager: SourceStateManager): DUINavigation
                                         case 'CURRENT':
                                             return 'Reading'
                                         case 'PLANNING':
-                                            return 'Planned'
+                                            return 'Plan to read'
                                         case 'COMPLETED':
                                             return 'Completed'
                                         case 'DROPPED':
                                             return 'Dropped'
                                         case 'PAUSED':
-                                            return 'On-Hold'
+                                            return 'Paused'
                                         case 'REPEATING':
-                                            return 'Re-Reading'
+                                            return 'ReReading'
                                         default:
                                             return 'None'
                                     }

@@ -5,7 +5,7 @@ export function AnilistResult<Data>(json: string | unknown): AnilistResult<Data>
         result.errors?.map(error => {
             console.log(`[ANILIST-ERROR(${error.status})] ${error.message}`)
         })
-        throw new Error('Error while fetching data from Anilist, check logs for more info')
+        throw new Error('Error while fetching data from AniList, check logs for more info')
     }
 
     return result

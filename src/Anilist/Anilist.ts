@@ -44,12 +44,12 @@ import {
 const ANILIST_GRAPHQL_ENDPOINT = 'https://graphql.anilist.co/'
 
 export const AnilistInfo: SourceInfo = {
-    name: 'Anilist',
+    name: 'AniList',
     author: 'Timeworn',
     contentRating: ContentRating.EVERYONE,
     icon: 'icon.png',
     version: '1.1.9',
-    description: 'Modified Anilist Tracker',
+    description: 'AniList Tracker',
     websiteBaseURL: 'https://anilist.co',
     intents: SourceIntents.MANGA_TRACKING | SourceIntents.SETTINGS_UI
 }
@@ -200,7 +200,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 }
 
                 if (anilistManga == null) {
-                    throw new Error(`Unable to find Manga on Anilist with id ${mangaId}`)
+                    throw new Error(`Unable to find Manga on AniList with id ${mangaId}`)
                 }
 
                 Object.assign(tempData, { id: anilistManga.mediaListEntry?.id, mediaId: anilistManga.id, startedAt: anilistManga.mediaListEntry?.startedAt, completedAt: anilistManga.mediaListEntry?.completedAt }) // Temp solution
@@ -267,7 +267,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     App.createDUISection({
                         id: 'trackStatus',
                         header: 'Manga Status',
-                        footer: 'Warning: Setting this to NONE will delete the listing from Anilist',
+                        footer: 'Warning: Setting this to NONE will delete the listing from AniList',
                         isHidden: false,
                         rows: async () => [
                             App.createDUISelect({
@@ -506,7 +506,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                             id: 'anilistLogin',
                             authorizeEndpoint: 'https://anilist.co/api/v2/oauth/authorize',
                             clientId: '5459',
-                            label: 'Login with Anilist',
+                            label: 'Login with AniList',
                             responseType: {
                                 type: 'token'
                             },
@@ -610,11 +610,11 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
     formatStatus(value: string | undefined): string {
         switch (value) {
             case 'CURRENT': return 'Reading'
-            case 'PLANNING': return 'Planned'
+            case 'PLANNING': return 'Plan to read'
             case 'COMPLETED': return 'Completed'
             case 'DROPPED': return 'Dropped'
-            case 'PAUSED': return 'On-Hold'
-            case 'REPEATING': return 'Re-Reading'
+            case 'PAUSED': return 'Paused'
+            case 'REPEATING': return 'Rereading'
 
             case 'FINISHED': return 'Finished'
             case 'RELEASING': return 'Releasing'
@@ -637,19 +637,6 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
-    reverseFormatFuzzyDate(date: string): AnilistManga.FuzzyDate | null {
-        if (date == '??') {
-            return null
-        }
-
-        const [year, month, day] = date.split('-').map(part => part === '??' ? null : parseInt(part))
-        return {
-            year: year ?? null,
-            month: month ?? null,
-            day: day ?? null
-        }
-    }
-
     getFuzzyDateInput(): FuzzyDateInput {
         const now = new Date()
         return {
@@ -666,5 +653,4 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
     //     const day = date.getUTCDate().toString().padStart(2, '0')
     //     return `${year}-${month}-${day}`
     // }
-
 }

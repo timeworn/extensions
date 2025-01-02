@@ -11,7 +11,7 @@ These are accounts to use while developing tracker extensions for Paperback. Use
 
 ## Tracker extensions
 
-**Anilist:**
+**AniList:**
 
 - E-mail: pbioseta@proton.me
 - Password: ibRrF23:nFA5Wyj

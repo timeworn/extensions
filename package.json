@@ -1,8 +1,8 @@
 {
   "name": "extensions",
   "version": "1.0.0",
-  "repositoryName": "Default extensions",
-  "description": "Default extensions for Paperback 0.8.",
+  "repositoryName": "Timeworn's Extensions",
+  "description": "Extensions for Paperback 0.8.",
   "main": "lib/index.js",
   "scripts": {
     "migrate": "npx paperback migrate",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Paperback-iOS/extensions"
+    "url": "git+https://github.com/timeworn/extensions"
   },
   "author": "Paperback",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/Paperback-iOS/extensions/issues"
+    "url": "https://github.com/timeworn/extensions/issues"
   },
-  "homepage": "https://github.com/Paperback-iOS/extensions#readme",
+  "homepage": "https://github.com/timeworn/extensions#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
