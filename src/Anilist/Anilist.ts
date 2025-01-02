@@ -412,6 +412,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     mutation = deleteMangaProgressMutation(id)
                 } else {
                     mutationData = {
+                        ...mutationData,
                         id: id,
                         mediaId: mediaId,
                         status: status,
