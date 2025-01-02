@@ -412,7 +412,6 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     mutation = deleteMangaProgressMutation(id)
                 } else {
                     mutationData = {
-                        ...mutationData,
                         id: id,
                         mediaId: mediaId,
                         status: status,
@@ -427,6 +426,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
 
                     mutation = saveMangaProgressMutation(mutationData)
                 }
+
                 console.log(JSON.stringify(mutation, null, 2)) // Log request data
 
                 await this.requestManager.schedule(App.createRequest({
