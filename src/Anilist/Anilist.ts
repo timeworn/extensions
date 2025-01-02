@@ -19,6 +19,7 @@ import {
 
 import {
     deleteMangaProgressMutation,
+    FuzzyDateInput,
     getMangaProgressQuery,
     getMangaQuery,
     GraphQLQuery,
@@ -322,12 +323,12 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                             }),
                             App.createDUILabel({
                                 id: 'startedAt',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? '??',
                                 label: 'Start Date'
                             }),
                             App.createDUILabel({
                                 id: 'completedAt',
-                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
+                                value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? '??',
                                 label: 'Finish Date'
                             }),
                         ]
@@ -391,19 +392,21 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 const status = values['status']?.[0] ?? ''
                 const id = tempData.id ? Number(tempData.id) : undefined //values['id'] != null ? Number(values['id']) : undefined
                 const mediaId = Number(tempData.mediaId) //Number(values['mediaId'])
-                const completedAt: AnilistManga.FuzzyDate = tempData.completedAt
+                const startedAt: AnilistManga.FuzzyDate | null = tempData.startedAt
+                const completedAt: AnilistManga.FuzzyDate | null = tempData.completedAt
 
                 let mutationData: SaveMangaProgressVariables = {}
 
                 if (status == 'COMPLETED') {
-                    if ( completedAt == null || (completedAt.year == null && completedAt.month == null && completedAt.day == null)) {
-                        const now = new Date()
+                    if (completedAt == null || (completedAt.year == null && completedAt.month == null && completedAt.day == null)) {
                         mutationData = {
-                            completedAt: {
-                                year: `${now.getFullYear()}`,
-                                month: `${now.getMonth() + 1}`,
-                                day: `${now.getDate()}`
-                            }
+                            completedAt: this.getFuzzyDateInput()
+                        }
+                    }
+                } else if (status == 'CURRENT') {
+                    if (startedAt == null || (startedAt.year == null && startedAt.month == null && startedAt.day == null)) {
+                        mutationData = {
+                            startedAt: this.getFuzzyDateInput()
                         }
                     }
                 }
@@ -559,14 +562,9 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                     
                     const startedAt = anilistManga?.mediaListEntry?.startedAt
                     if (startedAt == null || (startedAt?.day == null && startedAt?.month == null && startedAt?.year == null)) {
-                        const now = new Date()
                         params = {
                             ...params,
-                            startedAt: {
-                                year: now.getFullYear(),
-                                month: now.getMonth() + 1,
-                                day: now.getDate()
-                            }
+                            startedAt: this.getFuzzyDateInput()
                         }
                     }
                 } else {
@@ -640,7 +638,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
     }
 
     reverseFormatFuzzyDate(date: string): AnilistManga.FuzzyDate | null {
-        if (date == "??") {
+        if (date == '??') {
             return null
         }
 
@@ -649,6 +647,15 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
             year: year ?? null,
             month: month ?? null,
             day: day ?? null
+        }
+    }
+
+    getFuzzyDateInput(): FuzzyDateInput {
+        const now = new Date()
+        return {
+            year: `${now.getFullYear()}`,
+            month: `${now.getMonth() + 1}`,
+            day: `${now.getDate()}`
         }
     }
 
