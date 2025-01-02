@@ -1331,6 +1331,8 @@ var _Sources = (() => {
           const id = tempData.id ? Number(tempData.id) : void 0;
           const mediaId = Number(tempData.mediaId);
           let mutationData = {};
+          console.log(values);
+          console.log(JSON.stringify(values));
           if (status == "COMPLETED") {
             if (this.reverseFormatFuzzyDate(values["finish"]) == null) {
               const now = /* @__PURE__ */ new Date();
