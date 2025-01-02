@@ -321,12 +321,12 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                                 step: 1
                             }),
                             App.createDUILabel({
-                                id: 'start',
+                                id: 'startedAt',
                                 value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
                                 label: 'Start Date'
                             }),
                             App.createDUILabel({
-                                id: 'finish',
+                                id: 'completedAt',
                                 value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
                                 label: 'Finish Date'
                             }),
@@ -391,14 +391,14 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                 const status = values['status']?.[0] ?? ''
                 const id = tempData.id ? Number(tempData.id) : undefined //values['id'] != null ? Number(values['id']) : undefined
                 const mediaId = Number(tempData.mediaId) //Number(values['mediaId'])
-
+                
                 let mutationData: SaveMangaProgressVariables = {}
 
                 console.log(values)
                 console.log(JSON.stringify(values))
-
+                throw new Error(JSON.stringify(values));
                 if (status == 'COMPLETED') {
-                    if (this.reverseFormatFuzzyDate(values['finish']) == null) {
+                    if (this.reverseFormatFuzzyDate(values['completedAt']) == null) {
                         const now = new Date()
                         mutationData = {
                             completedAt: {
@@ -425,7 +425,7 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
                         private: values['private'],
                         hiddenFromStatusLists: values['hiddenFromStatusLists'],
                         score: Number(values['score']),
-                        startedAt: this.reverseFormatFuzzyDate(values['start']) ?? { year: null, month: null, day: null },
+                        startedAt: this.reverseFormatFuzzyDate(values['startedAt']) ?? { year: null, month: null, day: null },
                     }
                     mutation = saveMangaProgressMutation(mutationData)
                 }
@@ -641,12 +641,12 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
         return `${date.year ?? '??'}-${formattedMonth}-${formattedDay}`
     }
 
-    reverseFormatFuzzyDate(dateString: string): AnilistManga.FuzzyDate | null {
-        if (dateString == "??") {
+    reverseFormatFuzzyDate(date: string): AnilistManga.FuzzyDate | null {
+        if (date == "??") {
             return null
         }
 
-        const [year, month, day] = dateString.split('-').map(part => part === '??' ? null : parseInt(part))
+        const [year, month, day] = date.split('-').map(part => part === '??' ? null : parseInt(part))
         return {
             year: year ?? null,
             month: month ?? null,
