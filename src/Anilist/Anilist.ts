@@ -394,6 +394,9 @@ export class Anilist implements SearchResultsProviding, MangaProgressProviding {
 
                 let mutationData: SaveMangaProgressVariables = {}
 
+                console.log(values)
+                console.log(JSON.stringify(values))
+
                 if (status == 'COMPLETED') {
                     if (this.reverseFormatFuzzyDate(values['finish']) == null) {
                         const now = new Date()
