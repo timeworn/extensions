@@ -1349,6 +1349,7 @@ var _Sources = (() => {
             mutation = deleteMangaProgressMutation(id);
           } else {
             mutationData = {
+              ...mutationData,
               id,
               mediaId,
               status,
