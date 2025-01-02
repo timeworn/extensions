@@ -1260,12 +1260,12 @@ var _Sources = (() => {
                   step: 1
                 }),
                 App.createDUILabel({
-                  id: "start",
+                  id: "startedAt",
                   value: this.formatFuzzyDate(anilistManga.mediaListEntry?.startedAt) ?? "??",
                   label: "Start Date"
                 }),
                 App.createDUILabel({
-                  id: "finish",
+                  id: "completedAt",
                   value: this.formatFuzzyDate(anilistManga.mediaListEntry?.completedAt) ?? "??",
                   label: "Finish Date"
                 })
@@ -1333,8 +1333,9 @@ var _Sources = (() => {
           let mutationData = {};
           console.log(values);
           console.log(JSON.stringify(values));
+          throw new Error(JSON.stringify(values));
           if (status == "COMPLETED") {
-            if (this.reverseFormatFuzzyDate(values["finish"]) == null) {
+            if (this.reverseFormatFuzzyDate(values["completedAt"]) == null) {
               const now = /* @__PURE__ */ new Date();
               mutationData = {
                 completedAt: {
@@ -1360,7 +1361,7 @@ var _Sources = (() => {
               private: values["private"],
               hiddenFromStatusLists: values["hiddenFromStatusLists"],
               score: Number(values["score"]),
-              startedAt: this.reverseFormatFuzzyDate(values["start"]) ?? { year: null, month: null, day: null }
+              startedAt: this.reverseFormatFuzzyDate(values["startedAt"]) ?? { year: null, month: null, day: null }
             };
             mutation = saveMangaProgressMutation(mutationData);
           }
@@ -1561,11 +1562,11 @@ var _Sources = (() => {
       const formattedDay = date.day != null && date.day < 10 ? `0${date.day}` : date.day ?? "??";
       return `${date.year ?? "??"}-${formattedMonth}-${formattedDay}`;
     }
-    reverseFormatFuzzyDate(dateString) {
-      if (dateString == "??") {
+    reverseFormatFuzzyDate(date) {
+      if (date == "??") {
         return null;
       }
-      const [year, month, day] = dateString.split("-").map((part) => part === "??" ? null : parseInt(part));
+      const [year, month, day] = date.split("-").map((part) => part === "??" ? null : parseInt(part));
       return {
         year: year ?? null,
         month: month ?? null,
