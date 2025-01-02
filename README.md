@@ -1,6 +1,6 @@
 # Extensions
 
-Default extensions for [Paperback](https://paperback.moe/) 0.8.
+AniList extension for [Paperback](https://paperback.moe/) 0.8.
 
 The extensions are either tracker extensions or the official Paperback source.
 
@@ -11,5 +11,3 @@ Paperback does not officially support other third party source extensions (exten
 ## Supported trackers
 
 - [AniList](https://anilist.co/)
-- [MyAnimeList](https://myanimelist.net/)
-- [MangaUpdates](https://mangaupdates.com/)
