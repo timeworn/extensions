@@ -863,20 +863,9 @@ var _Sources = (() => {
     }
   });
   var saveMangaProgressMutation = (variables) => ({
-    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $startedAt: FuzzyDate, $completedAt: FuzzyDate) {
-        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, startedAt: $startedAt, completedAt: $completedAt) {
+    query: `mutation($id: Int, $mediaId: Int, $status: MediaListStatus, $score: Float, $progress: Int, $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean, $startedAt: FuzzyDateInput, $completedAt: FuzzyDateInput) {
+        SaveMediaListEntry(id: $id, mediaId: $mediaId, status: $status, score: $score, progress: $progress, progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists, startedAt: $startedAt, completedAt: $completedAt){
             id
-            mediaId
-            score
-            private
-            hiddenFromStatusLists
-            progress
-            progressVolumes
-            repeat
-            notes
-            startedAt
-            completedAt
-        }
     }`,
     variables
   });
@@ -1012,7 +1001,7 @@ var _Sources = (() => {
   var ANILIST_GRAPHQL_ENDPOINT = "https://graphql.anilist.co/";
   var AnilistInfo = {
     name: "Anilist",
-    author: "Faizan Durrani \u2665 Netsky",
+    author: "Timeworn",
     contentRating: import_types.ContentRating.EVERYONE,
     icon: "icon.png",
     version: "1.1.9",
@@ -1340,8 +1329,7 @@ var _Sources = (() => {
           const status = values["status"]?.[0] ?? "";
           const id = tempData.id ? Number(tempData.id) : void 0;
           const mediaId = Number(tempData.mediaId);
-          const startedAt = tempData.startedAt ?? { year: null, month: null, day: null };
-          const completedAt = tempData.completedAt ?? { year: null, month: null, day: null };
+          const completedAt = tempData.completedAt;
           let mutationData = {};
           if (status == "COMPLETED") {
             if (completedAt.year == null && completedAt.month == null && completedAt.day == null) {
@@ -1369,18 +1357,16 @@ var _Sources = (() => {
               repeat: values["repeat"],
               private: values["private"],
               hiddenFromStatusLists: values["hiddenFromStatusLists"],
-              score: Number(values["score"]),
-              startedAt: { year: startedAt.year, month: startedAt.month, day: startedAt.day }
+              score: Number(values["score"])
             };
             mutation = saveMangaProgressMutation(mutationData);
           }
           console.log(JSON.stringify(mutation, null, 2));
-          const response = await this.requestManager.schedule(App.createRequest({
+          await this.requestManager.schedule(App.createRequest({
             url: ANILIST_GRAPHQL_ENDPOINT,
             method: "POST",
             data: mutation
           }), 1);
-          throw new Error(JSON.stringify(mutation));
         }
       });
     }
