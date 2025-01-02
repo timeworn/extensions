@@ -10,7 +10,7 @@ import {
     Request,
     Response,
     TrackerActionQueue,
-    Searchable,
+    SearchResultsProviding,
     MangaProgressProviding,
     SourceManga,
     MangaProgress,
@@ -53,7 +53,7 @@ export const AnilistInfo: SourceInfo = {
     intents: SourceIntents.MANGA_TRACKING | SourceIntents.SETTINGS_UI
 }
 
-export class Anilist implements Searchable, MangaProgressProviding {
+export class Anilist implements SearchResultsProviding, MangaProgressProviding {
     stateManager = App.createSourceStateManager();
 
     requestManager = App.createRequestManager({

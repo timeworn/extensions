@@ -109,8 +109,16 @@ export const getMangaProgressQuery = (id: number): GraphQLQuery => ({
                 hiddenFromStatusLists
                 score
                 notes
-                startedAt
-                completedAt
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
             }
             title {
                 romaji
